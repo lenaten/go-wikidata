@@ -9,10 +9,9 @@ import (
 func TestWbGetEntities(t *testing.T) {
 	c := client()
 	id := "Q95"
-	in := c.NewWbGetEntitiesInput(id)
+	lang := "en"
+	in := c.NewWbGetEntitiesInput(id, lang)
 	out, err := c.WbGetEntities(in)
 	assert.Nil(t, err)
-	assert.NotEqual(t, 0, len(out.Entities))
-	entity := out.Entities[id]
-	assert.NotEqual(t, "Google", entity.Labels["en"])
+	assert.Equal(t, 1, out.Success)
 }

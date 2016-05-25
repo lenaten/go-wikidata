@@ -3,7 +3,7 @@ package wikidata
 import "encoding/json"
 
 // WbGetEntities request output.
-type WbGetEntities struct {
+type WbGetEntitiesInput struct {
 	Ids       string `url:"ids"`
 	Languages string `url:"languages"`
 }
@@ -24,17 +24,18 @@ type WbGetEntitiesOutput struct {
 	Success  int               `json:"success"`
 }
 
-func (c *Client) NewWbGetEntitiesInput(ids string) *WbGetEntities {
-	return &WbGetEntities{
+func (c *Client) NewWbGetEntitiesInput(ids string, languages string) *WbGetEntitiesInput {
+	return &WbGetEntitiesInput{
 		Ids: ids,
+		Languages: languages,
 	}
 }
 
 // WbGetEntities returns a WbGetEntitiesOutput.
-func (c *Client) WbGetEntities(in *WbGetEntities) (out *WbGetEntitiesOutput, err error) {
+func (c *Client) WbGetEntities(in *WbGetEntitiesInput) (out *WbGetEntitiesOutput, err error) {
 	body, err := c.call("wbgetentities", map[string]string{
 		"props":     "labels",
-		"languages": "en",
+		"languages": in.Languages,
 		"ids":       in.Ids,
 	})
 	if err != nil {
